@@ -46,7 +46,7 @@ def align(a, b, g=-5):
 
     origin_of_direction_score_dict = {}
     for i in range(n):
-        print("the {}th element of seq a : {}".format(i+1, a[i]))
+        # print("the {}th element of seq a : {}".format(i+1, a[i]))
         for j in range(m):
             ali_matrix[i+1,j+1] = max(ali_matrix[i, j+1] + g, ali_matrix[i+1, j] + g, ali_matrix[i, j] + get_score(a[i], b[j]))
             origin_of_direction_score_dict[(i+1, j+1)] = {"v": ali_matrix[i, j+1] + g,
@@ -61,24 +61,27 @@ def align(a, b, g=-5):
     aligned_b = ""
     i = n
     j = m
-
+    # on the matrix last element: i, j on the sequences last elements are i-1 and j-1
+    print(a[i-1], b[j-1])
+    print(ali_matrix[i,j])
+    print("diagonally one pair before the last pairs:", a[i-2], b[j-2])
     while i>0 or j>0:
         # print("downrightmost element after assigning the lengths of seqs to i&j: ", ali_matrix[n, m])
         if i>0 and j>0 and ali_matrix[i, j] == origin_of_direction_score_dict[(i, j)]["d"]:
             # print("vertical origin of direction score with new i and j: ", origin_of_direction_score_dict[i,j]["h"])
             # print("previous (diagonal) elements from a is {} and from b is {}".format(a[i-2], b[j-2]))
-            aligned_a = str(a[i-1]) + aligned_a
-            aligned_b = str(b[j-1]) + aligned_b
+            aligned_a = str(a[i-2]) + aligned_a # i&j on seq are already 1 less than
+            aligned_b = str(b[j-2]) + aligned_b
             # print("b[j]=", str(b[j - 1]))
             i -= 1
             j -= 1
         elif i>0 and ali_matrix[i, j] == origin_of_direction_score_dict[(i, j)]["v"]:
-            aligned_a = str(a[i-1]) + aligned_a
+            aligned_a = str(a[i-2]) + aligned_a
             aligned_b = "-" + aligned_b
             i -= 1
         elif j>0 and ali_matrix[i, j] == origin_of_direction_score_dict[(i, j)]["h"]:
             aligned_a = "-" + aligned_a
-            aligned_b = str(b[j-1]) + aligned_b
+            aligned_b = str(b[j-2]) + aligned_b
             j -= 1
         # print("b[j]=", str(b[j - 1]))
 
