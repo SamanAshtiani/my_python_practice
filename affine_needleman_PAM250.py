@@ -30,7 +30,7 @@ def get_score(a, b):
     return pam_dict[a][b]
 
 
-def align(a, b, g=-5):
+def align(a, b, g=-5, g_extension= -2):
     # match = 1
     # mismatch = -1
     n = len(a)
@@ -50,10 +50,14 @@ def align(a, b, g=-5):
     for i in range(n):
         # print("the {}th element of seq a : {}".format(i+1, a[i]))
         for j in range(m):
-            e_y =
-            e_x =
-            ali_matrix[i+1,j+1] = max(ali_matrix[i, j+1] + g, ali_matrix[i, j+1] + e_y , ali_matrix[i+1, j] + g, ali_matrix[i+1, j] +e_x , ali_matrix[i, j] + get_score(a[i], b[j]),)
+            e_y = g + i*g_extension    # on the matrix (i+1)-1 =i
+            e_x = g + j*g_extension
+            ali_matrix[i+1,j+1] = max(ali_matrix[i, j+1] + g, ali_matrix[i, j+1] + e_y, \
+                                      ali_matrix[i+1, j] + g, ali_matrix[i+1, j] + e_x, \
+                                      ali_matrix[i, j] + get_score(a[i], b[j]))
             origin_of_direction_score_dict[(i+1, j+1)] = {"v": ali_matrix[i, j+1] + g,
+                                      "y": ali_matrix[i, j+1] + e_y,
+                                      "x": ali_matrix[i+1, j] + e_x,
                                       "h": ali_matrix[i+1, j] + g,
                                       "d": ali_matrix[i, j]+ get_score(a[i], b[j])}
     print("down-rightmost element index-->max of n and m plus 1 ie n=4+1, m=5+1: ", ali_matrix[4, 5])
@@ -84,10 +88,22 @@ def align(a, b, g=-5):
             aligned_a = str(a[i-1]) + aligned_a
             aligned_b = "-" + aligned_b
             i -= 1
+
+        elif i > 0 and ali_matrix[i, j] == origin_of_direction_score_dict[(i, j)]["y"]:
+            aligned_a = str(a[i - 1]) + aligned_a
+            aligned_b = "-" + aligned_b
+            i -= 1
+
         elif j>0 and ali_matrix[i, j] == origin_of_direction_score_dict[(i, j)]["h"]:
             aligned_a = "-" + aligned_a
             aligned_b = str(b[j-1]) + aligned_b
             j -= 1
+
+        elif j>0 and ali_matrix[i, j] == origin_of_direction_score_dict[(i, j)]["x"]:
+            aligned_a = "-" + aligned_a
+            aligned_b = str(b[j-1]) + aligned_b
+            j -= 1
+
         # print("b[j]=", str(b[j - 1]))
 
     print(aligned_a)
