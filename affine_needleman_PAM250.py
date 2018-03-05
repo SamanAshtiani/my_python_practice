@@ -60,8 +60,8 @@ def align(a, b, g=-5, g_extension= -2):
                                       "x": ali_matrix[i+1, j] + e_x,
                                       "h": ali_matrix[i+1, j] + g,
                                       "d": ali_matrix[i, j]+ get_score(a[i], b[j])}
-    print("down-rightmost element index-->max of n and m plus 1 ie n=4+1, m=5+1: ", ali_matrix[4, 5])
-    print("diagonal value+s from which the down-rightmost element was assigned its value: ", origin_of_direction_score_dict[(4, 5)]["d"])
+    # print("down-rightmost element index-->max of n and m plus 1 ie n=4+1, m=5+1: ", ali_matrix[4, 5])
+    # print("diagonal value+s from which the down-rightmost element was assigned its value: ", origin_of_direction_score_dict[(4, 5)]["d"])
     print(ali_matrix)
 
 
@@ -70,10 +70,10 @@ def align(a, b, g=-5, g_extension= -2):
     i = n
     j = m
     # on the matrix last element: i, j on the sequences last elements are i-1 and j-1
-    print(a[i-1], b[j-1])
-    print(ali_matrix[i,j])
-    print(ali_matrix[0, 0])
-    print("diagonally one pair before the last pairs:", a[i-2], b[j-2])
+    # print(a[i-1], b[j-1])
+    # print(ali_matrix[i,j])
+    # print(ali_matrix[0, 0])
+    # print("diagonally one pair before the last pairs:", a[i-2], b[j-2])
     while i>0 or j>0:
         # print("downrightmost element after assigning the lengths of seqs to i&j: ", ali_matrix[n, m])
         if i>0 and j>0 and ali_matrix[i, j] == origin_of_direction_score_dict[(i, j)]["d"]:
